@@ -102,6 +102,8 @@ A reusable logging middleware package is included separately and is used through
 ✅ Notification Display
 
 ---
+<img width="1897" height="852" alt="image" src="https://github.com/user-attachments/assets/4b66bee5-a3e2-40a7-bbbf-80abf9718356" />
+<img width="1867" height="845" alt="image" src="https://github.com/user-attachments/assets/b720e45d-1aac-4b02-978d-217e0a4b099a" />
 
 ## Author
 
