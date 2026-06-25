@@ -26,22 +26,24 @@ export async function fetchNotifications() {
         "frontend",
         "error",
         "api",
-        "Failed to fetch notifications"
+        `Failed to fetch notifications. Status: ${response.status}`
       );
-      throw new Error("Failed to fetch notifications");
+
+      throw new Error(`HTTP ${response.status}`);
     }
 
     const data = await response.json();
+    console.log("API Response:", data);
 
     await Log(
       token,
       "frontend",
       "info",
       "api",
-      "Notifications fetched successfully"
+      `Successfully fetched ${data.notifications?.length || 0} notifications`
     );
 
-    return data.notifications;
+    return data.notifications ?? [];
   } catch (error) {
     await Log(
       token,
