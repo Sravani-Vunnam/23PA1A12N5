@@ -1,20 +1,49 @@
 import { useState, useEffect } from "react";
-import { fetchNotifications } from "../apis/notifications";
+import { fetchNotifications } from "../api/notifications";
+import { Log } from "logging-middleware";
+
+const token = import.meta.env.VITE_LOG_TOKEN;
 
 export function useNotifications() {
   const [notifications, setNotifications] = useState([]);
-  const [total, setTotal] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    const load = async () => {
-      const data = await fetchNotifications();
-      setNotifications(data.notifications ?? []);
+    const loadNotifications = async () => {
+      try {
+        await Log(
+          token,
+          "frontend",
+          "info",
+          "hook",
+          "Loading notifications"
+        );
+
+        const data = await fetchNotifications();
+
+        setNotifications(data);
+      } catch (err) {
+        setError(err.message);
+
+        await Log(
+          token,
+          "frontend",
+          "error",
+          "hook",
+          err.message
+        );
+      } finally {
+        setLoading(false);
+      }
     };
 
-    load();
-  }, [notifications]);
+    loadNotifications();
+  }, []);
 
-  const totalPages = 0;
-
-  return { notifications, total, totalPages, loading: false, error: true };
+  return {
+    notifications,
+    loading,
+    error,
+  };
 }
